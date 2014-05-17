@@ -18,6 +18,15 @@ npm i -g mocha
 npm test
 ```
 
+**Documentation**
+
+See: https://github.com/wehriam/hellosign/blob/master/DOCS.md
+
+```
+npm install -g markdox
+markdox lib/hellosign.js -o DOCS.md
+```
+
 **Usage**
 
 The module wraps the api and returns [when.js](https://github.com/cujojs/when "A solid, fast Promises/A+ and when() implementation, plus other async goodies.") promises.
