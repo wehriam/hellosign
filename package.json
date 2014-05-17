@@ -17,11 +17,10 @@
   },
   "keywords": [],
   "dependencies" : {
-    "when": "*",
-    "request": "*",
-    "mocha": "*",
-    "underscore": "*",
-    "node-uuid": "*"
+    "when": "3.2.0",
+    "request": "2.34.0",
+    "underscore": "1.6.0",
+    "node-uuid": "1.4.1"
   },
   "noAnalyze": true,
   "license": "MIT",

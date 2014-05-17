@@ -46,6 +46,50 @@ signature_request.send(options).done(function(result){
 });
 
 ```
+**Supported Methods**
+
+Account ([API Documentation](https://www.hellosign.com/api/reference#Account))
+
+ * Account::get(parameters)
+ * Account::post(parameters)
+ * Account::create(parameters)
+ * Account::verify(parameters)
+
+SignatureRequest ([API Documentation](https://www.hellosign.com/api/reference#SignatureRequest))
+
+ * SignatureRequest::get(parameters)
+ * SignatureRequest::list(parameters)
+ * SignatureRequest::send(parameters)
+ * SignatureRequest::send_with_template(parameters)
+ * SignatureRequest::remind(parameters)
+ * SignatureRequest::cancel(parameters)
+ * SignatureRequest::create_embedded(parameters)
+ * SignatureRequest::create_embedded_with_template(parameters)
+
+Template ([API Documentation](https://www.hellosign.com/api/reference#Template))
+
+ * Template::get(parameters)
+ * Template::list(parameters)
+ * Template::add_user(parameters)
+ * Template::remove_user(parameters)
+
+Team ([API Documentation](https://www.hellosign.com/api/reference#Team))
+
+ * Team::get(parameters)
+ * Team::post(parameters)
+ * Team::create(parameters)
+ * Team::destroy(parameters)
+ * Team::add_member(parameters)
+ * Team::remove_member(parameters)
+
+UnclaimedDraft ([API Documentation](https://www.hellosign.com/api/reference#UnclaimedDraft))
+
+ * UnclaimedDraft::create(parameters)
+ * UnclaimedDraft::create_embedded(parameters)
+
+Embedded ([API Documentation](https://www.hellosign.com/api/reference#Embedded))
+
+ * Embedded::get(parameters)
 
 **Todo**
 
