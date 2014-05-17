@@ -1,0 +1,34 @@
+{
+  "name": "hellosign",
+  "preferGlobal": "false",
+  "version": "0.0.1",
+  "author": "John Wehr <johnwehr@gmail.com>",
+  "description": "HelloSign API wrapper for Node.js",
+  "contributors": [ 
+    {
+      "name": "John Wehr",
+      "email": "johnwehr@gmail.com"
+    } 
+  ],
+  "main": "./lib/hellosign.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wehriam/hellosign.git"
+  },
+  "keywords": [],
+  "dependencies" : {
+    "when": "*",
+    "request": "*",
+    "mocha": "*",
+    "underscore": "*",
+    "node-uuid": "*"
+  },
+  "noAnalyze": true,
+  "license": "MIT",
+  "engine": {
+    "node": ">=0.6"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}
