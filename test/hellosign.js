@@ -5,9 +5,9 @@ var UUID = require("node-uuid");
 var fs = require("fs");
 var path = require("path");
 
-describe('HelloSign SignatureRequest', function() {
+describe('HelloSign SignatureRequest', function () {
   this.timeout(60000);
-  it('should send a signature request for multiple files.', function(done) {
+  it('should send a signature request for multiple files.', function (done) {
     var signature_request = new HelloSign.SignatureRequest(config.hellosign_api_key, true);
     var signer_email_1 = UUID.v1().replace(/-/g, '') + "@example.com";
     var signer_email_2 = UUID.v1().replace(/-/g, '') + "@example.com";
@@ -17,38 +17,39 @@ describe('HelloSign SignatureRequest', function() {
     var sample_file_2 = fs.createReadStream(path.join(__dirname, './files/sample2.pdf'));
     var options = {
       title: UUID.v1().replace(/-/g, ''),
-      file:[sample_file_1, sample_file_2],
-      signers:[
-        {
-          name:signer_name_1, 
-          email_address:signer_email_1
-        }, {
-          name:signer_name_2, 
-          email_address:signer_email_2
-        }
-      ]
+      file: [sample_file_1, sample_file_2],
+      signers: [{
+        name: signer_name_1,
+        email_address: signer_email_1
+      }, {
+        name: signer_name_2,
+        email_address: signer_email_2
+      }]
     };
     var signature_request_id;
-    signature_request.send(options).then(function(result){
+    signature_request.send(options).then(function (result) {
       assert.equal(result.signature_request.title, options.title);
       signature_request_id = result.signature_request.signature_request_id;
-      return signature_request.get({signature_request_id:signature_request_id});
-    }).then(function(result){
+      return signature_request.get({
+        signature_request_id: signature_request_id
+      });
+    }).then(function (result) {
       assert.equal(result.signature_request.title, options.title);
       return signature_request.list();
-    }).then(function(result){
+    }).then(function (result) {
       assert.equal(result.signature_requests[0].title, options.title);
-      return signature_request.cancel({signature_request_id:signature_request_id});
-    }).then(function(result){
+      return signature_request.cancel({
+        signature_request_id: signature_request_id
+      });
+    }).then(function (result) {
       done();
     });
   });
 });
 
-
-describe('HelloSign Embedded', function() {
+describe('HelloSign Embedded', function () {
   this.timeout(60000);
-  it('should embed a document.', function(done) {
+  it('should embed a document.', function (done) {
     var signature_request = new HelloSign.SignatureRequest(config.hellosign_api_key, true);
     var embedded = new HelloSign.Embedded(config.hellosign_api_key, true);
     var signer_email = UUID.v1().replace(/-/g, '') + "@example.com";
@@ -56,75 +57,86 @@ describe('HelloSign Embedded', function() {
     var sample_file = fs.createReadStream(path.join(__dirname, './files/sample1.pdf'));
     var options = {
       title: UUID.v1().replace(/-/g, ''),
-      file:[sample_file],
-      signers:[
-        {
-          name:signer_name, 
-          email_address:signer_email
-        }
-      ],
+      file: [sample_file],
+      signers: [{
+        name: signer_name,
+        email_address: signer_email
+      }],
       client_id: config.hellosign_client_id
     };
     var signature_request_id;
-    signature_request.create_embedded(options).then(function(result){
+    signature_request.create_embedded(options).then(function (result) {
       signature_request_id = result.signature_request.signature_request_id;
-      return embedded.get({signature_id:result.signature_request.signatures[0].signature_id});
-    }).then(function(result){
+      return embedded.get({
+        signature_id: result.signature_request.signatures[0].signature_id
+      });
+    }).then(function (result) {
       assert(result.embedded.sign_url);
-      return signature_request.cancel({signature_request_id:signature_request_id});
-    }).done(function(result){
+      return signature_request.cancel({
+        signature_request_id: signature_request_id
+      });
+    }).done(function (result) {
       done();
     });
   });
 });
 
-describe('HelloSign Account', function() {
+describe('HelloSign Account', function () {
   this.timeout(5000);
-  it('should update an account.', function(done) {
+  it('should update an account.', function (done) {
     var account = new HelloSign.Account(config.hellosign_api_key, true);
     var temporary_callback_url = "https://example.com/" + UUID.v1().replace(/-/g, '');
     var callback_url;
-    account.get().then(function(result){
+    account.get().then(function (result) {
       callback_url = result.account.callback_url;
-      return account.post({callback_url:temporary_callback_url});
-    }).then(function(result){
+      return account.post({
+        callback_url: temporary_callback_url
+      });
+    }).then(function (result) {
       assert.equal(result.account.callback_url, temporary_callback_url);
       return account.get();
-    }).then(function(result){
+    }).then(function (result) {
       assert.equal(result.account.callback_url, temporary_callback_url);
-      return account.post({callback_url:callback_url});
-    }).then(function(result){
+      return account.post({
+        callback_url: callback_url
+      });
+    }).then(function (result) {
       assert.equal(result.account.callback_url, callback_url);
       return account.get();
-    }).done(function(result){
+    }).done(function (result) {
       assert.equal(result.account.callback_url, callback_url);
       done();
     });
   });
-  it('should create and verify an account.', function(done) {
+  it('should create and verify an account.', function (done) {
     var account = new HelloSign.Account(config.hellosign_api_key, true);
     var email = UUID.v1().replace(/-/g, '') + "@example.com";
     var password = UUID.v1().replace(/-/g, '');
     var account_id;
-    account.get().then(function(result){
+    account.get().then(function (result) {
       if(!result.account.is_paid_hs) {
         throw new Error("Unable to test account creation without paid API key.");
       }
-      return account.create({email_address:email, password:password});
-    }).then(function(result){
+      return account.create({
+        email_address: email,
+        password: password
+      });
+    }).then(function (result) {
       account_id = result.account.account_id;
       assert.equal(result.account.email_address, email);
-      return account.verify({email_address:email});
-    }).done(function(result){
+      return account.verify({
+        email_address: email
+      });
+    }).done(function (result) {
       assert.equal(result.account.email_address, email);
       done();
     });
   });
-  it('should throw an error.', function(done) {
+  it('should throw an error.', function (done) {
     var account = new HelloSign.Account("Bad API key", true);
-    account.get().done(function(){
+    account.get().done(function () {
       throw new Error("API works with bad API key.")
-    }, function(e){
+    }, function (e) {
       assert(e instanceof HelloSign.Error);
       assert.equal(e.response.statusCode, 401);
       done();

@@ -30,5 +30,10 @@
   },
   "scripts": {
     "test": "mocha"
+  },
+  "plugins": [ "plugins/markdown" ],
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true
   }
 }
