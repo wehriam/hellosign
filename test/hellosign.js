@@ -3,6 +3,7 @@ var config = require("../config.json");
 var HelloSign = require("../lib/hellosign.js");
 var UUID = require("node-uuid");
 var fs = require("fs");
+var when = require("when");
 var path = require("path");
 
 describe('HelloSign SignatureRequest', function () {
@@ -72,6 +73,28 @@ describe('HelloSign Embedded', function () {
       });
     }).then(function (result) {
       assert(result.embedded.sign_url);
+      // Wait ten seconds before requesting the files.
+      return when.promise(function(resolve, reject){
+        setTimeout(function(){
+          resolve();
+        }, 10000);
+      });
+    }).then(function(){  
+      return signature_request.files({file_type:"pdf", signature_request_id:signature_request_id});
+    }).then(function(stream){
+      var sample_download_path = path.join(__dirname, './files/sample_download.pdf');
+      return when.promise(function(resolve, reject){
+        var sample_download = fs.createWriteStream(sample_download_path);
+        stream.pipe(sample_download);
+        sample_download.on("error", function(e){
+          reject(e);
+        });
+        sample_download.on("finish", function(){
+          fs.unlinkSync(sample_download_path);
+          resolve();
+        });
+      });
+    }).then(function () {
       return signature_request.cancel({
         signature_request_id: signature_request_id
       });
@@ -82,7 +105,7 @@ describe('HelloSign Embedded', function () {
 });
 
 describe('HelloSign Account', function () {
-  this.timeout(5000);
+  this.timeout(10000);
   it('should update an account.', function (done) {
     var account = new HelloSign.Account(config.hellosign_api_key, true);
     var temporary_callback_url = "https://example.com/" + UUID.v1().replace(/-/g, '');

@@ -41,8 +41,16 @@ var options = {
     }
   ]
 };
-signature_request.send(options).done(function(result){
-  console.log("Signature request " + result.signature_request.signature_request_id + " sent");
+signature_request.send(options).then(function(result){
+  var signature_request_id = result.signature_request.signature_request_id;
+  console.log("Signature request " + signature_request_id + " sent");
+  return signature_request.files({file_type:"pdf", signature_request_id:signature_request_id});
+}).then(function(stream){
+  var example_pdf_stream = fs.createWriteStream(path.join(__dirname, './files/example-out.pdf'));
+  stream.pipe(example_pdf_stream);
+  example_pdf_stream.on("finish", function(){
+    console.log("Signature request downloaded.");
+  });
 });
 
 ```
@@ -65,6 +73,7 @@ SignatureRequest ([API Documentation](https://www.hellosign.com/api/reference#Si
  * SignatureRequest::cancel(parameters)
  * SignatureRequest::create_embedded(parameters)
  * SignatureRequest::create_embedded_with_template(parameters)
+ * SignatureRequest::files(parameters)
 
 Template ([API Documentation](https://www.hellosign.com/api/reference#Template))
 
