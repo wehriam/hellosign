@@ -49,7 +49,7 @@ signature_request.send(options).then(function(result){
   var example_pdf_stream = fs.createWriteStream(path.join(__dirname, './files/example-out.pdf'));
   stream.pipe(example_pdf_stream);
   example_pdf_stream.on("finish", function(){
-    console.log("Signature request downloaded.");
+    console.log("Example PDF output downloaded.");
   });
 });
 
