@@ -18,7 +18,7 @@
   "keywords": [],
   "dependencies" : {
     "when": "3.2.0",
-    "request": "2.34.0",
+    "request": "2.53.0",
     "underscore": "1.6.0",
     "node-uuid": "1.4.1"
   },
